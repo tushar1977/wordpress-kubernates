@@ -1,0 +1,19 @@
+namespace: wordpress
+
+pv:
+  name: wordpress-pv
+
+pvc:
+  name: wordpresspv-claim
+
+wordpress:
+  image: wordpress:latest
+  replicas: 1
+  serviceType: ClusterIP
+
+openresty:
+  image: open
+  replicas: 1
+  serviceType: NodePort
+  nodePort: 30080
+

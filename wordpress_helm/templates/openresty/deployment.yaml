@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openresty
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: openresty
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openresty
+  template:
+    metadata:
+      labels:
+        app: openresty
+    spec:
+      initContainers:
+      containers:
+      - name: openresty
+        image: {{ .Values.openresty.image }}
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /opt/openresty/nginx/conf/nginx.conf
+          subPath: nginx.conf
+          readOnly: true
+        - name: wordpress-data
+          mountPath: /var/www/html
+          readOnly: true
+        - name: nginx-logs
+          mountPath: /usr/local/openresty/nginx/logs
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: openresty-config
+          items:
+          - key: nginx.conf
+            path: nginx.conf
+      - name: wordpress-data
+        persistentVolumeClaim:
+          claimName: {{ .Values.pvc.name}}
+      - name: nginx-logs
+        emptyDir: {}

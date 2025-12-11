@@ -1,0 +1,14 @@
+# openresty-service-local.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: openresty
+  namespace: {{ .Values.namespace }}
+spec:
+  type: NodePort  
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: {{ .Values.openresty.nodePort }}
+  selector:
+    app: openresty
