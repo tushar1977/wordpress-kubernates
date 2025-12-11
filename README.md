@@ -12,6 +12,21 @@ cd ..
 helm install wp wordpress_helm/
 ```
 
+## For Grafana and Prometheus
+
+```bash
+helm install grafana grafana/grafana
+helm install prometheus prometheus-community/prometheus
+kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-ext
+kubectl expose service grafana --type=NodePort --target-port=3000 --name=grafana-ext
+```
+
+2) Now open http://localhost:30243
+3) You can find grafana credudencials by ```kubectl get secret grafana -o jsonpath="{.data}"```
+4) Add a new Data source in Grafana using that Prometheus
+5) Import the ```15661``` dashboard
+
+
 ## About Directory
 
 ```.
