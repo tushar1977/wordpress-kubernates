@@ -11,6 +11,7 @@ cd ..
 ```bash
 helm install wp wordpress_helm/
 ```
+After that, you can visit ```http://localhost:30080```
 
 ## For Grafana and Prometheus
 
